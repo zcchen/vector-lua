@@ -7,6 +7,23 @@ local calc = {}
 
 local vec3, quat
 
+local esp = 0.0001
+local function atan2(a, b)
+    if math.abs(b) < esp then
+        if a > 0 then
+            return math.pi / 2
+        else
+            return -math.pi / 2
+        end
+    else
+        if b > 0 then
+            return math.atan(a / b)
+        else
+            return math.atan(a / b) - math.pi
+        end
+    end
+end
+
 vec3 = {
     __add = function(v, u) return v:add(u) end,
     __sub = function(v, u) return v:sub(u) end,
@@ -101,6 +118,10 @@ vec3 = {
             return math.sqrt(v.x * v.x + v.y * v.y + v.z * v.z)
         end,
 
+        iszero = function(v)
+            return v.x == 0 and v.y == 0 and v.z == 0
+        end,
+
         norm = function(v)
             local len = v:length()
             if len == 0 then
@@ -121,7 +142,7 @@ vec3 = {
             if not calc.isvec3(u) then
                 error('angle can ONLY be calculated by vec3s.')
             end
-            return math.acos(v:dot(u) / (v:length() + u:length()))
+            return atan2(v.y, v.x) - atan2(u.y, u.x)
         end,
 
         project = function(v, u)
@@ -146,10 +167,10 @@ end
 function calc.isvec3(v)
     return getmetatable(v) == vec3
 end
-function calc.vector(x, y, z)
+function calc.vector3(x, y, z)
     return vec3(x, y, z)
 end
-function calc.isvector(v)
+function calc.isvector3(v)
     return getmetatable(v) == vec3
 end
 
