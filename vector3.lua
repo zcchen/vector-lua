@@ -142,6 +142,10 @@ vec3 = {
             if not calc.isvec3(u) then
                 error('angle can ONLY be calculated by vec3s.')
             end
+            if math.abs(v.z) > esp or math.abs(u.z) > esp then
+                -- TODO
+                error('Angle calculation between 3-dimension vectors is NOT supported yet.')
+            end
             return atan2(v.y, v.x) - atan2(u.y, u.x)
         end,
 
@@ -155,6 +159,17 @@ vec3 = {
             out.x = unorm.x * dot
             out.y = unorm.y * dot
             out.z = unorm.z * dot
+            return out
+        end,
+
+        rotate = function(v, theta)
+            local len = v:length()
+            local ang = vec3(1, 0, 0):angle(v)
+            local out = vec3()
+            -- TODO: add 3-D supported
+            out.x = len * math.cos(ang + theta)
+            out.y = len * math.sin(ang + theta)
+            out.z = 0
             return out
         end,
     },
