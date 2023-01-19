@@ -138,6 +138,7 @@ vec3 = {
             return v:sub(v, u):length()
         end,
 
+        -- from vector v to vector u
         angle = function(v, u)
             if not calc.isvec3(u) then
                 error('angle can ONLY be calculated by vec3s.')
@@ -146,7 +147,7 @@ vec3 = {
                 -- TODO
                 error('Angle calculation between 3-dimension vectors is NOT supported yet.')
             end
-            return atan2(v.y, v.x) - atan2(u.y, u.x)
+            return atan2(u.y, u.x) - atan2(v.y, v.x)
         end,
 
         project = function(v, u)
